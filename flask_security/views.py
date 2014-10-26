@@ -234,6 +234,9 @@ def confirm_email(token):
 
     do_flash(*get_message(msg))
 
+    if request.headers.get('Accept') and request.headers['Accept'] == 'application/json':
+        return jsonify(dict(meta=dict(code=200), response={'message': get_message(msg)}))
+
     return redirect(get_url(_security.post_confirm_view) or
                     get_url(_security.post_login_view))
 
@@ -282,6 +285,8 @@ def reset_password(token):
         update_password(user, form.password.data)
         do_flash(*get_message('PASSWORD_RESET'))
         login_user(user)
+        if request.json:
+            return jsonify(dict(meta=dict(code=200), response={'message': get_message('PASSWORD_RESET')}))
         return redirect(get_url(_security.post_reset_view) or
                         get_url(_security.post_login_view))
 
