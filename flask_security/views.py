@@ -276,6 +276,8 @@ def reset_password(token):
         do_flash(*get_message('PASSWORD_RESET_EXPIRED', email=user.email,
                               within=_security.reset_password_within))
     if invalid or expired:
+        if request.json:
+            return jsonify(dict(meta=dict(code=400), response={'message': "invalid/expired token"}))
         return redirect(url_for('forgot_password'))
 
     form = _security.reset_password_form()
