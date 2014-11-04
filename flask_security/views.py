@@ -93,6 +93,9 @@ def logout():
     if current_user.is_authenticated():
         logout_user()
 
+    if request.json:
+        return jsonify(dict(meta=dict(code=200), response={'message': "success"}))
+
     return redirect(request.args.get('next', None) or
                     get_url(_security.post_logout_view))
 
