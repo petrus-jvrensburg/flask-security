@@ -48,11 +48,6 @@ def _render_json(form, include_user=True, include_auth_token=False):
         if include_auth_token:
             token = form.user.get_auth_token()
             response['user']['authentication_token'] = token
-        if user.roles:
-            response['user']['roles'] = []
-            for role in roles:
-                response['user']['roles'].append(role.name)
-
 
     return jsonify(dict(meta=dict(code=code), response=response))
 
